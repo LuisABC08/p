@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parisina - Tienda de Telas y Costura</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-section">
+                <img src="{% static 'images/logo.png' %}" alt="Parisina Logo" class="logo">
+                <span class="logo-text">
+                    <h3>Parisina - Tienda de Telas y Costura</h3>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="{% url 'inicio' %}" class="nav-link">Inicio</a></li>
+                <li><a href="{% url 'lista_proveedores' %}" class="nav-link">Proveedor</a></li>
+                
+                <!-- Menú Desplegable de Productos -->
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">Productos ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'lista_telas' %}" class="dropdown-link">Telas</a></li>
+                        <li><a href="{% url 'lista_decoracion' %}" class="dropdown-link">Decoración</a></li>
+                        <li><a href="{% url 'lista_merceria' %}" class="dropdown-link">Mercería y Manualidades</a></li>
+                        <li><a href="{% url 'lista_hogar' %}" class="dropdown-link">Hogar</a></li>
+                    </ul>
+                    {% if user.is_staff %}
+                        <!-- Menú desplegable de Administración -->
+                        <li class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle">Administración ▼</a>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="{% url 'lista_clientes' %}" class="dropdown-link">Clientes</a></li>
+                                <li><a href="{% url 'lista_pedidos' %}" class="dropdown-link">Pedidos</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </li>
+                
+                <!-- Enlaces individuales para móvil -->
+                <li class="mobile-only"><a href="{% url 'lista_telas' %}" class="nav-link">Telas</a></li>
+                <li class="mobile-only"><a href="{% url 'lista_decoracion' %}" class="nav-link">Decoración</a></li>
+                <li class="mobile-only"><a href="{% url 'lista_merceria' %}" class="nav-link">Mercería</a></li>
+                <li class="mobile-only"><a href="{% url 'lista_hogar' %}" class="nav-link">Hogar</a></li>
+                
+                {% if user.is_authenticated %}
+                    <!-- SOLO CLIENTES VEN EL CARRITO -->
+                    {% if not user.is_staff %}
+                    <li>
+                        <a href="{% url 'ver_carrito' %}" class="nav-link carrito-link">
+                            Carrito 
+                            {% if items_carrito > 0 %}
+                                <span class="carrito-count">{{ items_carrito }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'mis_pedidos' %}" class="nav-link">Mis Pedidos</a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- BOTÓN CERRAR SESIÓN PARA TODOS -->
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link logout-btn">
+                                Cerrar Sesión 
+                                {% if user.is_staff %}
+                                    ({{ user.username }})
+                                {% else %}
+                                    ({{ user.username }})
+                                {% endif %}
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="nav-link">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="nav-link">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mensajes -->
+    {% if messages %}
+    <div class="messages-container">
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="Parisina Logo" class="logo">
+                    <p>Tu tienda de confianza para telas, decoración y más</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Información del Alumno</h3>
+                    <p>Centro de Bachillerato Tecnológico Industrial y de Servicios No. 128</p>
+                    <p>De La Rosa Abril Alexa 0559</p>
+                    <p>Contribuye Aplicaciones WEB</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@parisina.com</p>
+                    <p>Teléfono: (55) 1234-5678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Parisina. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

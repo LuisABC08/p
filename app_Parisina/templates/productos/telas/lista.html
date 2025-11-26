@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Catálogo de Telas</h1>
+        {% if user.is_staff %}
+        <a href="{% url 'agregar_tela' %}" class="btn btn-primary">Agregar Nueva Tela</a>
+        {% endif %}
+    </div>
+
+    <div class="product-grid">
+        {% for tela in telas %}
+        <div class="product-card">
+            {% if tela.imagen %}
+            <img src="{{ tela.imagen.url }}" alt="{{ tela.nombre }}" class="product-image">
+            {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="Sin imagen" class="product-image">
+            {% endif %}
+            <div class="product-info">
+                <h3>{{ tela.nombre }}</h3>
+                <p class="product-detail"><strong>Tipo:</strong> {{ tela.tipo_tela }}</p>
+                <p class="product-detail"><strong>Color:</strong> {{ tela.color }}</p>
+                <p class="product-detail"><strong>Precio:</strong> ${{ tela.precio }}</p>
+                <p class="product-detail"><strong>Stock:</strong> {{ tela.stock }}</p>
+                <p class="product-detail"><strong>Proveedor:</strong> {{ tela.proveedor.empresa }}</p>
+                
+                {% if tela.descripcion %}
+                <p class="product-description">{{ tela.descripcion }}</p>
+                {% endif %}
+
+                <div class="product-actions">
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'agregar_al_carrito' 'telas' tela.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    {% endif %}
+                    
+                    {% if user.is_staff %}
+                    <div class="admin-actions">
+                        <a href="{% url 'editar_tela' tela.id %}" class="btn btn-secondary">Editar</a>
+                        <a href="{% url 'eliminar_tela' tela.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <p>No hay telas disponibles en este momento.</p>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_tela' %}" class="btn btn-primary">Agregar la Primera Tela</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

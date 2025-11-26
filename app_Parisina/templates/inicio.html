@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <h1>Bienvenido a Parisina</h1>
+        <p>Descubre nuestra amplia variedad de productos de calidad</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Sección Telas -->
+    <section class="product-section">
+        <h2 class="section-title">Telas Destacadas</h2>
+        <div class="product-grid">
+            {% for tela in telas %}
+            <div class="product-card">
+                {% if tela.imagen %}
+                <img src="{{ tela.imagen.url }}" alt="{{ tela.nombre }}" class="product-image">
+                {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Sin imagen" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ tela.nombre }}</h3>
+                    <p class="product-type">{{ tela.tipo_tela }} - {{ tela.color }}</p>
+                    <p class="product-price">${{ tela.precio }}</p>
+                    <p class="product-stock">Stock: {{ tela.stock }}</p>
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'agregar_al_carrito' 'telas' tela.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    {% endif %}
+                    {% if user.is_staff %}
+                    <div class="admin-actions">
+                        <a href="{% url 'editar_tela' tela.id %}" class="btn btn-secondary">Editar</a>
+                        <a href="{% url 'eliminar_tela' tela.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay telas disponibles.</p>
+            {% endfor %}
+        </div>
+        <div class="section-footer">
+            <a href="{% url 'lista_telas' %}" class="btn btn-outline">Ver Todas las Telas</a>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_tela' %}" class="btn btn-primary">Agregar Nueva Tela</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Sección Decoración -->
+    <section class="product-section">
+        <h2 class="section-title">Decoración Destacada</h2>
+        <div class="product-grid">
+            {% for producto in decoracion %}
+            <div class="product-card">
+                {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-image">
+                {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Sin imagen" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="product-type">{{ producto.tipo_producto }} - {{ producto.material }}</p>
+                    <p class="product-price">${{ producto.precio }}</p>
+                    <p class="product-stock">Stock: {{ producto.stock }}</p>
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'agregar_al_carrito' 'decoracion' producto.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay productos de decoración disponibles.</p>
+            {% endfor %}
+        </div>
+        <div class="section-footer">
+            <a href="{% url 'lista_decoracion' %}" class="btn btn-outline">Ver Toda la Decoración</a>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_decoracion' %}" class="btn btn-primary">Agregar Nueva Decoración</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Sección Mercería -->
+    <section class="product-section">
+        <h2 class="section-title">Mercería Destacada</h2>
+        <div class="product-grid">
+            {% for producto in merceria %}
+            <div class="product-card">
+                {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-image">
+                {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Sin imagen" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="product-type">{{ producto.categoria }} - {{ producto.marca }}</p>
+                    <p class="product-price">${{ producto.precio }}</p>
+                    <p class="product-stock">Stock: {{ producto.stock }}</p>
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'agregar_al_carrito' 'merceria' producto.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay productos de mercería disponibles.</p>
+            {% endfor %}
+        </div>
+        <div class="section-footer">
+            <a href="{% url 'lista_merceria' %}" class="btn btn-outline">Ver Toda la Mercería</a>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_merceria' %}" class="btn btn-primary">Agregar Nueva Mercería</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Sección Hogar -->
+    <section class="product-section">
+        <h2 class="section-title">Hogar Destacado</h2>
+        <div class="product-grid">
+            {% for producto in hogar %}
+            <div class="product-card">
+                {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-image">
+                {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Sin imagen" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="product-type">{{ producto.tipo_articulo }} - {{ producto.color }}</p>
+                    <p class="product-price">${{ producto.precio }}</p>
+                    <p class="product-stock">Stock: {{ producto.stock }}</p>
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'agregar_al_carrito' 'hogar' producto.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay productos para hogar disponibles.</p>
+            {% endfor %}
+        </div>
+        <div class="section-footer">
+            <a href="{% url 'lista_hogar' %}" class="btn btn-outline">Ver Todo Hogar</a>
+            {% if user.is_staff %}
+            <a href="{% url 'agregar_hogar' %}" class="btn btn-primary">Agregar Nuevo Producto Hogar</a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

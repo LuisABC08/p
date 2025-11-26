@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-form">
+        <h2>Registrarse en Parisina</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Información de la Cuenta -->
+            <div class="form-section">
+                <h3>Información de la Cuenta</h3>
+                
+                <div class="form-group">
+                    <label for="id_username">Nombre de Usuario:</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Correo Electrónico (para la cuenta):</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password1">Contraseña:</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div class="error">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password2">Confirmar Contraseña:</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div class="error">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Información Personal -->
+            <div class="form-section">
+                <h3>Información Personal</h3>
+
+                <div class="form-group">
+                    <label for="id_correo">Correo Electrónico (de contacto):</label>
+                    {{ form.correo }}
+                    {% if form.correo.errors %}
+                    <div class="error">{{ form.correo.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_telefono">Teléfono:</label>
+                    {{ form.telefono }}
+                    {% if form.telefono.errors %}
+                    <div class="error">{{ form.telefono.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_direccion">Dirección:</label>
+                    {{ form.direccion }}
+                    {% if form.direccion.errors %}
+                    <div class="error">{{ form.direccion.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_codigo_postal">Código Postal:</label>
+                    {{ form.codigo_postal }}
+                    {% if form.codigo_postal.errors %}
+                    <div class="error">{{ form.codigo_postal.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+        </form>
+        
+        <p class="auth-link">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
